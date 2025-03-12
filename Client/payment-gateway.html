@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/payment-gateway.css" />
+    <title>Payment Gateway</title>
+</head>
+<body>
+    <div class="container">
+        <div class="payment-header">
+            <h1>Complete Your Payment</h1>
+            <p>Please select your preferred payment method</p>
+        </div>
+        
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="order-item">
+                <span>Product 1</span>
+                <span>$99.99</span>
+            </div>
+            <div class="order-item">
+                <span>Product 2</span>
+                <span>$49.99</span>
+            </div>
+            <div class="order-item">
+                <span>Shipping</span>
+                <span>$5.99</span>
+            </div>
+            <div class="order-item total-section">
+                <span>Total</span>
+                <span>$155.97</span>
+            </div>
+        </div>
+        
+        <div class="payment-options">
+            <div class="payment-option active" id="credit-card-option">
+                <img src="/api/placeholder/80/40" alt="Credit Card">
+                <h3>Credit Card</h3>
+                <p>Pay securely with your credit card</p>
+            </div>
+            <div class="payment-option" id="ewallet-option">
+                <img src="/api/placeholder/80/40" alt="E-Wallet">
+                <h3>E-Wallet</h3>
+                <p>Quick payment with your e-wallet</p>
+            </div>
+        </div>
+        
+        <div class="payment-form-container active" id="credit-card-form">
+            <div class="payment-form">
+                <div class="card-icons">
+                    <img src="/api/placeholder/50/30" alt="Visa">
+                    <img src="/api/placeholder/50/30" alt="Mastercard">
+                    <img src="/api/placeholder/50/30" alt="Amex">
+                    <img src="/api/placeholder/50/30" alt="Discover">
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-name">Name on Card</label>
+                    <input type="text" id="card-name" class="form-control" placeholder="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" class="form-control" placeholder="1234 5678 9012 3456">
+                </div>
+                
+                <div class="card-elements">
+                    <div class="form-group">
+                        <label for="expiry-date">Expiry Date</label>
+                        <input type="text" id="expiry-date" class="form-control" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" class="form-control" placeholder="123">
+                    </div>
+                </div>
+                
+                <button class="pay-button">Pay $155.97</button>
+                
+                <div class="secure-badge">
+                    <span>Your payment info is secure and encrypted</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="payment-form-container" id="ewallet-form">
+            <div class="payment-form">
+                <div id="phone-input-container">
+                    <div class="form-group">
+                        <label for="phone-number">E-Wallet Phone Number</label>
+                        <input type="tel" id="phone-number" class="form-control" placeholder="Enter your registered phone number">
+                    </div>
+                    
+                    <button class="pay-button" id="request-otp-btn">Request OTP</button>
+                </div>
+                
+                <div id="otp-container" class="hidden">
+                    <div class="form-group">
+                        <label>Enter the OTP sent to your phone</label>
+                        <div class="otp-container">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                        </div>
+                        <div class="resend-otp">Resend OTP</div>
+                    </div>
+                    
+                    <button class="pay-button">Verify & Pay $155.97</button>
+                </div>
+                
+                <div class="secure-badge">
+                    <span>Your payment info is secure and encrypted</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple toggle between payment methods
+        document.getElementById('credit-card-option').addEventListener('click', function() {
+            // Update active states for options
+            document.getElementById('credit-card-option').classList.add('active');
+            document.getElementById('ewallet-option').classList.remove('active');
+            
+            // Show/hide forms
+            document.getElementById('credit-card-form').classList.add('active');
+            document.getElementById('ewallet-form').classList.remove('active');
+        });
+        
+        document.getElementById('ewallet-option').addEventListener('click', function() {
+            // Update active states for options
+            document.getElementById('ewallet-option').classList.add('active');
+            document.getElementById('credit-card-option').classList.remove('active');
+            
+            // Show/hide forms
+            document.getElementById('ewallet-form').classList.add('active');
+            document.getElementById('credit-card-form').classList.remove('active');
+        });
+        
+        // Show OTP input after requesting OTP
+        document.getElementById('request-otp-btn').addEventListener('click', function() {
+            document.getElementById('phone-input-container').classList.add('hidden');
+            document.getElementById('otp-container').classList.remove('hidden');
+        });
+        
+        // Auto-tab for OTP inputs
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
