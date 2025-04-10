@@ -157,6 +157,7 @@ body {
 
 .payment-form-container {
     display: none;
+    text-decoration: none;
 }
 
 .payment-form-container.active {

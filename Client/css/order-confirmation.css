@@ -275,6 +275,11 @@ body {
     transition: all 0.3s ease;
 }
 
+a:link{
+    text-decoration: none;
+
+}
+
 .primary-action {
     background-color: #3498db;
     color: white;
