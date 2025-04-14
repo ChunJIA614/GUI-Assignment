@@ -17,7 +17,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea, #764ba2);
     min-height: 100vh;
 }
 
@@ -27,7 +26,7 @@ body {
     width: 850px;
     height: 500px;
     background-color: #fff;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     overflow: hidden;
     max-width: 95%;
@@ -83,7 +82,7 @@ body {
     position: relative;
     height: 100%;
     width: 100%;
-    background: linear-gradient(to right, #764ba2, #667eea);
+    background:#088178;
     transition: transform 0.6s ease-in-out;
 }
 
@@ -160,7 +159,7 @@ p {
 .form-container input:focus, 
 .form-container select:focus {
     background-color: #fff;
-    box-shadow: 0 0 0 2px #764ba2;
+    box-shadow: 0 0 0 2px #088178;
 }
 
 .form-row {
@@ -189,8 +188,8 @@ p {
 
 button {
     border-radius: 5px;
-    border: 1px solid #764ba2;
-    background-color: #764ba2;
+    border: 1px solid #088178;
+    background-color: #088178;
     color: #fff;
     font-size: 14px;
     font-weight: bold;
@@ -366,3 +365,20 @@ button:active {
 .security-section .section-title {
     color: #0056b3;
 }
+
+img{
+    height:100px;
+    width: 120px;
+}
+
+.logo-wrapper {
+    width: 130px;           /* Size of the circle */
+    height: 130px;
+    background-color: white;
+    border-radius: 50%;     /* Makes it a circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    margin: 0 auto 20px auto; /* Center and add bottom spacing */
+  }
