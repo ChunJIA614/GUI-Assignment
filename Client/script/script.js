@@ -45,3 +45,19 @@ const countdown = setInterval(function() {
         document.querySelector(".promotion-subtitle").innerHTML = "Promotion Has Ended!";
     }
 }, 1000);
+
+function toggleFilter(element) {
+  const content = element.nextElementSibling;
+  const arrow = element.querySelector('.filter-arrow');
+  
+  content.classList.toggle('show');
+  arrow.classList.toggle('rotated');
+}
+
+// Auto-expand the first filter on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const firstFilter = document.querySelector('.filter-title');
+  if (firstFilter) {
+      toggleFilter(firstFilter);
+  }
+});
