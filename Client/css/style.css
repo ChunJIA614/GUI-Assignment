@@ -352,6 +352,14 @@ header {
 /* ==============================*/
 /* -----  Features Section ---- */
 /* =============================*/
+.fe-title{
+  text-align: center;
+}
+
+.feature{
+  padding: 40px 80px;
+}
+
 #feature {
   /* display: flex;
   align-items: center;
