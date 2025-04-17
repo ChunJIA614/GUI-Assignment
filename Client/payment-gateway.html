@@ -8,153 +8,273 @@
 </head>
 <body>
     <div class="container">
-        <div class="payment-header">
-            <h1>Complete Your Payment</h1>
-            <p>Please select your preferred payment method</p>
-        </div>
-        
-        <div class="order-summary">
-            <h2>Order Summary</h2>
-            <div class="order-item">
-                <span>Product 1</span>
-                <span>$99.99</span>
-            </div>
-            <div class="order-item">
-                <span>Product 2</span>
-                <span>$49.99</span>
-            </div>
-            <div class="order-item">
-                <span>Shipping</span>
-                <span>$5.99</span>
-            </div>
-            <div class="order-item total-section">
-                <span>Total</span>
-                <span>$155.97</span>
-            </div>
-        </div>
-        
-        <div class="payment-options">
-            <div class="payment-option active" id="credit-card-option">
-                <img src="/api/placeholder/80/40" alt="Credit Card">
-                <h3>Credit Card</h3>
-                <p>Pay securely with your credit card</p>
-            </div>
-            <div class="payment-option" id="ewallet-option">
-                <img src="/api/placeholder/80/40" alt="E-Wallet">
-                <h3>E-Wallet</h3>
-                <p>Quick payment with your e-wallet</p>
-            </div>
-        </div>
-        
-        <div class="payment-form-container active" id="credit-card-form">
-            <div class="payment-form">
-                <div class="card-icons">
-                    <img src="/api/placeholder/50/30" alt="Visa">
-                    <img src="/api/placeholder/50/30" alt="Mastercard">
-                    <img src="/api/placeholder/50/30" alt="Amex">
-                    <img src="/api/placeholder/50/30" alt="Discover">
-                </div>
+        <div class="checkout-container">
+            <div class="payment-methods">
+                <h2>Checkout</h2>
                 
-                <div class="form-group">
-                    <label for="card-name">Name on Card</label>
-                    <input type="text" id="card-name" class="form-control" placeholder="John Doe">
-                </div>
-                
-                <div class="form-group">
-                    <label for="card-number">Card Number</label>
-                    <input type="text" id="card-number" class="form-control" placeholder="1234 5678 9012 3456">
-                </div>
-                
-                <div class="card-elements">
-                    <div class="form-group">
-                        <label for="expiry-date">Expiry Date</label>
-                        <input type="text" id="expiry-date" class="form-control" placeholder="MM/YY">
-                    </div>
-                    <div class="form-group">
-                        <label for="cvv">CVV</label>
-                        <input type="text" id="cvv" class="form-control" placeholder="123">
-                    </div>
-                </div>
-                
-                <a href="order-confirmation.html">
-                    <button class="pay-button">Pay $155.97</button>
-                </a>
-                
-                <div class="secure-badge">
-                    <span>Your payment info is secure and encrypted</span>
-                </div>
-            </div>
-        </div>
-        
-        <div class="payment-form-container" id="ewallet-form">
-            <div class="payment-form">
-                <div id="phone-input-container">
-                    <div class="form-group">
-                        <label for="phone-number">E-Wallet Phone Number</label>
-                        <input type="tel" id="phone-number" class="form-control" placeholder="Enter your registered phone number">
-                    </div>
-                    
-                    <button class="pay-button" id="request-otp-btn">Request OTP</button>
-                </div>
-                
-                <div id="otp-container" class="hidden">
-                    <div class="form-group">
-                        <label>Enter the OTP sent to your phone</label>
-                        <div class="otp-container">
-                            <input type="text" class="form-control otp-input" maxlength="1">
-                            <input type="text" class="form-control otp-input" maxlength="1">
-                            <input type="text" class="form-control otp-input" maxlength="1">
-                            <input type="text" class="form-control otp-input" maxlength="1">
+                <!-- Shipping Address Section -->
+                <div class="step active" id="step-address">
+                    <div class="address-section">
+                        <h3>Shipping Address</h3>
+                        <div class="address-list">
+                            <div class="address-card selected">
+                                <strong>John Doe</strong>
+                                <p>123 Main Street, Apt 4B</p>
+                                <p>New York, NY 10001</p>
+                                <p>Phone: (555) 123-4567</p>
+                            </div>
+                            
+                            <div class="address-card">
+                                <strong>John Doe</strong>
+                                <p>456 Park Avenue, Suite 201</p>
+                                <p>New York, NY 10022</p>
+                                <p>Phone: (555) 987-6543</p>
+                            </div>
+                            
+                            <div class="address-card add-new" onclick="toggleNewAddress()">
+                                <span>+ Add New Address</span>
+                            </div>
                         </div>
-                        <div class="resend-otp">Resend OTP</div>
+                        
+                        <div class="new-address" id="new-address-form">
+                            <div class="form-group">
+                                <label for="full-name">Full Name</label>
+                                <input type="text" id="full-name" placeholder="Enter your full name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="address-line1">Address Line 1</label>
+                                <input type="text" id="address-line1" placeholder="Street address, P.O. box">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="address-line2">Address Line 2 (Optional)</label>
+                                <input type="text" id="address-line2" placeholder="Apartment, suite, unit, building, floor, etc.">
+                            </div>
+                            
+                            <div class="card-row">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" placeholder="City">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <input type="text" id="state" placeholder="State/Province">
+                                </div>
+                            </div>
+                            
+                            <div class="card-row">
+                                <div class="form-group">
+                                    <label for="zip">ZIP Code</label>
+                                    <input type="text" id="zip" placeholder="ZIP/Postal code">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <select id="country">
+                                        <option value="US">United States</option>
+                                        <option value="CA">Canada</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="AU">Australia</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="Phone number">
+                            </div>
+                        </div>
+                        
+                        <button class="btn" onclick="nextStep()">Continue to Payment</button>
                     </div>
-                    
-                    <a href="order-confirmation.html">
-                        <button class="pay-button">Verify & Pay $155.97</button>
-                    </a>
                 </div>
                 
-                <div class="secure-badge">
-                    <span>Your payment info is secure and encrypted</span>
+                <!-- Payment Method Section -->
+                <div class="step" id="step-payment">
+                    <h3>Choose Payment Method</h3>
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('card')">Credit Card</div>
+                        <div class="tab" onclick="switchTab('ewallet')">E-Wallet</div>
+                    </div>
+                    
+                    <!-- Credit Card Tab -->
+                    <div class="tab-content active" id="tab-card">
+                        <div class="form-group" style="position: relative;">
+                            <label for="card-number">Card Number</label>
+                            <input type="text" id="card-number" placeholder="1234 5678 9012 3456">
+                            <div class="creditcard-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 4H4C2.89 4 2.01 4.89 2.01 6L2 18C2 19.11 2.89 20 4 20H20C21.11 20 22 19.11 22 18V6C22 4.89 21.11 4 20 4ZM20 18H4V12H20V18ZM20 8H4V6H20V8Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cardholder-name">Cardholder Name</label>
+                            <input type="text" id="cardholder-name" placeholder="Name as appears on card">
+                        </div>
+                        
+                        <div class="card-row">
+                            <div class="form-group">
+                                <label for="expiry">Expiration Date</label>
+                                <input type="text" id="expiry" placeholder="MM/YY">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" placeholder="123">
+                            </div>
+                        </div>
+                        <a href="order-confirmation.html">
+                            <button class="btn" onclick="completePayment()">Pay Now</button>
+                        </a>
+                        
+                        <div class="secure-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 11.99H19C18.47 16.11 15.72 19.78 12 20.93V12H5V6.3L12 3.19V11.99Z" fill="currentColor"/>
+                            </svg>
+                            Secure Payment
+                        </div>
+                    </div>
+                    
+                    <!-- E-Wallet Tab -->
+                    <div class="tab-content" id="tab-ewallet">
+                        <div class="form-group">
+                            <label for="phone-number">Phone Number</label>
+                            <input type="tel" id="phone-number" placeholder="Enter your registered phone number">
+                        </div>
+                        
+                        <button class="btn" onclick="requestOTP()">Request OTP</button>
+                        
+                        <div class="otp-section" id="otp-section" style="display: none;">
+                            <p>Enter the 4-digit OTP sent to your mobile phone</p>
+                            <div class="otp-input">
+                                <input type="text" maxlength="1">
+                                <input type="text" maxlength="1">
+                                <input type="text" maxlength="1">
+                                <input type="text" maxlength="1">
+                            </div>
+                            <a href="#" class="resend">Didn't receive OTP? Resend</a>
+                            <a href="order-confirmation.html">
+                                <button class="btn" style="margin-top: 20px;" onclick="completePayment()">Verify & Pay</button>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-outline" style="margin-top: 20px;" onclick="previousStep()">Back to Shipping</button>
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                
+                <div class="order-items">
+                    <div class="order-item">
+                        <div class="item-image"></div>
+                        <div class="item-details">
+                            <h4>Premium Cotton T-Shirt</h4>
+                            <p>Size: M | Color: Blue</p>
+                            <p class="item-price">$29.99</p>
+                        </div>
+                    </div>
+                    
+                    <div class="order-item">
+                        <div class="item-image"></div>
+                        <div class="item-details">
+                            <h4>Slim Fit Jeans</h4>
+                            <p>Size: 32 | Color: Black</p>
+                            <p class="item-price">$49.99</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="order-total">
+                    <div class="order-row">
+                        <span>Subtotal</span>
+                        <span>$79.98</span>
+                    </div>
+                    
+                    <div class="order-row">
+                        <span>Shipping</span>
+                        <span>$5.99</span>
+                    </div>
+                    
+                    <div class="order-row">
+                        <span>Tax</span>
+                        <span>$7.20</span>
+                    </div>
+                    
+                    <div class="order-row total-row">
+                        <span>Total</span>
+                        <span>$93.17</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Simple toggle between payment methods
-        document.getElementById('credit-card-option').addEventListener('click', function() {
-            // Update active states for options
-            document.getElementById('credit-card-option').classList.add('active');
-            document.getElementById('ewallet-option').classList.remove('active');
+       function switchTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             
-            // Show/hide forms
-            document.getElementById('credit-card-form').classList.add('active');
-            document.getElementById('ewallet-form').classList.remove('active');
-        });
+            // Show selected tab
+            if (tab === 'card') {
+                document.querySelector('.tab:nth-child(1)').classList.add('active');
+                document.querySelector('#tab-card').classList.add('active');
+            } else if (tab === 'ewallet') {
+                document.querySelector('.tab:nth-child(2)').classList.add('active');
+                document.querySelector('#tab-ewallet').classList.add('active');
+            }
+        }
         
-        document.getElementById('ewallet-option').addEventListener('click', function() {
-            // Update active states for options
-            document.getElementById('ewallet-option').classList.add('active');
-            document.getElementById('credit-card-option').classList.remove('active');
-            
-            // Show/hide forms
-            document.getElementById('ewallet-form').classList.add('active');
-            document.getElementById('credit-card-form').classList.remove('active');
-        });
+        function toggleNewAddress() {
+            const newAddressForm = document.getElementById('new-address-form');
+            if (newAddressForm.style.display === 'block') {
+                newAddressForm.style.display = 'none';
+            } else {
+                newAddressForm.style.display = 'block';
+            }
+        }
         
-        // Show OTP input after requesting OTP
-        document.getElementById('request-otp-btn').addEventListener('click', function() {
-            document.getElementById('phone-input-container').classList.add('hidden');
-            document.getElementById('otp-container').classList.remove('hidden');
+        function nextStep() {
+            document.getElementById('step-address').classList.remove('active');
+            document.getElementById('step-payment').classList.add('active');
+        }
+        
+        function previousStep() {
+            document.getElementById('step-payment').classList.remove('active');
+            document.getElementById('step-address').classList.add('active');
+        }
+        
+        function requestOTP() {
+            document.getElementById('otp-section').style.display = 'block';
+        }
+        
+        function completePayment() {
+            alert('Processing payment...');
+            // In a real application, this would connect to a payment processor
+        }
+        
+        // Handle address card selection
+        document.querySelectorAll('.address-card:not(.add-new)').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.address-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
         });
         
         // Auto-tab for OTP inputs
-        const otpInputs = document.querySelectorAll('.otp-input');
-        otpInputs.forEach((input, index) => {
+        document.querySelectorAll('.otp-input input').forEach(input => {
             input.addEventListener('input', function() {
-                if (this.value.length === 1 && index < otpInputs.length - 1) {
-                    otpInputs[index + 1].focus();
+                if (this.value.length === 1) {
+                    const nextInput = this.nextElementSibling;
+                    if (nextInput) {
+                        nextInput.focus();
+                    }
                 }
             });
         });
