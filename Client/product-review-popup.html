@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Review Popup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: rgba(0, 0, 0, 0.5);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-modal {
+            background-color: white;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            background-color: #f9f9f9;
+            border: 1px dashed #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            color: #999;
+            font-size: 10px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .product-details {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .order-info {
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+
+
+        .dropdown-chevron {
+            margin-left: auto;
+            width: 20px;
+            height: 20px;
+            fill: #7f8c8d;
+        }
+
+        .rating-section {
+            margin-bottom: 20px;
+        }
+
+        .rating-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .stars-container {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .star {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            fill: #ddd;
+            transition: fill 0.2s;
+        }
+
+        .star.selected {
+            fill: #f1c40f;
+        }
+
+        .star:hover {
+            fill: #f1c40f;
+        }
+
+        .review-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .review-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .media-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .media-button {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            color: #3498db;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .media-button svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            fill: #3498db;
+        }
+
+        .media-info {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .anonymous-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .anonymous-option input {
+            width: 16px;
+            height: 16px;
+        }
+
+        .anonymous-option label {
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .username-note {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .cancel-button {
+            padding: 12px 25px;
+            background-color: white;
+            color: #7f8c8d;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .submit-button {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .review-modal {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .product-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-image {
+                margin-bottom: 15px;
+                width: 100%;
+                height: 120px;
+            }
+            
+            .action-buttons {
+                flex-direction: column-reverse;
+                gap: 10px;
+            }
+            
+            .cancel-button, .submit-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="review-modal">
+        <div class="close-modal">&times;</div>
+        
+        <h2 class="modal-title">Rate Product</h2>
+        
+        <div class="product-info">
+            <div class="product-image">Product Image<br>Placeholder</div>
+            <div class="product-details">
+                <div class="product-name">Smart Watch Pro Series 7</div>
+                <div class="order-info">Order #36925814 • Delivered on March 09, 2025</div>
+            </div>
+        </div>
+        
+        
+        <div class="rating-section">
+            <div class="rating-title">Product Quality</div>
+            <div class="stars-container">
+                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                </svg>
+            </div>
+            <div class="review-form">
+                <textarea placeholder="Performance: write about this aspect.&#10;&#10;Share more thoughts on the product to help other buyers."></textarea>
+                
+                <div class="media-buttons">
+                    <div class="media-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                        </svg>
+                        Add Photo
+                    </div>
+                    <div class="media-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                        </svg>
+                        Add Video
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="anonymous-option">
+            <input type="checkbox" id="anonymous">
+            <label for="anonymous">Leave your review anonymously</label>
+        </div>
+        <div class="username-note">Your user name will be shown as hi.mjunk</div>
+        
+        <div class="action-buttons">
+            <button class="cancel-button">CANCEL</button>
+            <button class="submit-button">SUBMIT</button>
+        </div>
+    </div>
+
+    <script>
+        // Star rating functionality
+        document.querySelectorAll('.stars-container').forEach(container => {
+            const stars = container.querySelectorAll('.star');
+            
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    // Reset all stars
+                    stars.forEach(s => s.classList.remove('selected'));
+                    
+                    // Select clicked star and all before it
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].classList.add('selected');
+                    }
+                });
+            });
+        });
+
+        // Close modal functionality
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            // In a real implementation, this would hide the modal
+            alert('Modal closed');
+        });
+
+        // Submit button functionality
+        document.querySelector('.submit-button').addEventListener('click', () => {
+            // In a real implementation, this would submit the review
+            alert('Review submitted');
+        });
+
+        // Cancel button functionality
+        document.querySelector('.cancel-button').addEventListener('click', () => {
+            // In a real implementation, this would hide the modal
+            alert('Review cancelled');
+        });
+    </script>
+</body>
+</html>
