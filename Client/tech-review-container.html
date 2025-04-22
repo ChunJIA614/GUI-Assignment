@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Gadget Review Container</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .review-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .username {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .review-metadata {
+            display: flex;
+            align-items: center;
+            margin-top: 4px;
+        }
+        
+        .review-date {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .product-name {
+            font-size: 14px;
+            color: #555;
+            margin-left: 8px;
+            padding-left: 8px;
+            border-left: 1px solid #ddd;
+            font-style: italic;
+        }
+        
+        .star-rating {
+            margin-bottom: 12px;
+        }
+        
+        .star-rating .fa-star {
+            color: #ffc107;
+            font-size: 18px;
+            margin-right: 2px;
+        }
+        
+        .star-rating .fa-star.empty {
+            color: #e0e0e0;
+        }
+        
+        .review-comment {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .review-divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 30px 0;
+        }
+        
+        /* Multiple review styles */
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="reviews-list">
+        <!-- Review Item 1 -->
+        <div class="review-container">
+            <div class="review-header">
+                <div class="user-info">
+                    <span class="username">TechEnthusiast84</span>
+                    <div class="review-metadata">
+                        <span class="review-date">April 22, 2025 • 14:30</span>
+                        <span class="product-name">Ultimate Pro Wireless Earbuds X1</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="star-rating">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star empty"></i>
+            </div>
+            
+            <div class="review-comment">
+                These wireless earbuds exceeded my expectations in most areas. The sound quality is exceptional with deep bass and clear highs. Battery life lasts about 6 hours on a single charge, which is good but not amazing. The noise cancellation works well in most environments. The only drawback is that they're slightly uncomfortable during extended listening sessions. Overall, a great product for the price point!
+            </div>
+        </div>
+        
+        <!-- Review Item 2 -->
+        <div class="review-container">
+            <div class="review-header">
+                <div class="user-info">
+                    <span class="username">GadgetGuru</span>
+                    <div class="review-metadata">
+                        <span class="review-date">April 21, 2025 • 09:15</span>
+                        <span class="product-name">QuantumView 4K Gaming Monitor</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="star-rating">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+            </div>
+            
+            <div class="review-comment">
+                This monitor is absolutely perfect for both competitive gaming and content creation. The 144Hz refresh rate with 1ms response time makes gameplay incredibly smooth. Colors are vibrant and accurate right out of the box. The included stand is sturdy and allows for height, tilt, and swivel adjustments. Cable management is well thought out. I've been using it for three weeks now and haven't experienced any dead pixels or backlight bleeding. Highly recommended!
+            </div>
+        </div>
+        
+        <!-- Review Item 3 -->
+        <div class="review-container">
+            <div class="review-header">
+                <div class="user-info">
+                    <span class="username">CasualReviewer22</span>
+                    <div class="review-metadata">
+                        <span class="review-date">April 18, 2025 • 16:45</span>
+                        <span class="product-name">SmartHome Hub Pro</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="star-rating">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star empty"></i>
+                <i class="fa-solid fa-star empty"></i>
+            </div>
+            
+            <div class="review-comment">
+                The SmartHome Hub Pro works well with most of my devices, but the setup process was more complicated than advertised. The companion app crashes occasionally and some third-party integrations are buggy. Voice recognition is decent but struggles with complex commands. On the positive side, when it works, it really ties all my smart devices together nicely. I hope future software updates will improve stability.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
