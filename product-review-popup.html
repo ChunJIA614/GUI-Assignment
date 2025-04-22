@@ -13,13 +13,48 @@
         }
 
         body {
-            background-color: rgba(0, 0, 0, 0.5);
-            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100vh;
+            background-color: #f5f7fa;
         }
 
+        /* Button styles */
+        .review-button {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .review-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Modal background overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* Modal styles from original code */
         .review-modal {
             background-color: white;
             border-radius: 10px;
@@ -28,6 +63,12 @@
             padding: 30px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .close-modal {
@@ -83,7 +124,6 @@
             color: #7f8c8d;
             font-size: 13px;
         }
-
 
         .dropdown-chevron {
             margin-left: auto;
@@ -250,72 +290,99 @@
     </style>
 </head>
 <body>
-    <div class="review-modal">
-        <div class="close-modal">&times;</div>
-        
-        <h2 class="modal-title">Rate Product</h2>
-        
-        <div class="product-info">
-            <div class="product-image">Product Image<br>Placeholder</div>
-            <div class="product-details">
-                <div class="product-name">Smart Watch Pro Series 7</div>
-                <div class="order-info">Order #36925814 • Delivered on March 09, 2025</div>
+    <!-- Review Button -->
+    <button class="review-button" id="openReviewModal">
+        Rate Your Product
+    </button>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="review-modal">
+            <div class="close-modal">&times;</div>
+            
+            <h2 class="modal-title">Rate Product</h2>
+            
+            <div class="product-info">
+                <div class="product-image">Product Image<br>Placeholder</div>
+                <div class="product-details">
+                    <div class="product-name">Smart Watch Pro Series 7</div>
+                    <div class="order-info">Order #36925814 • Delivered on March 09, 2025</div>
+                </div>
             </div>
-        </div>
-        
-        
-        <div class="rating-section">
-            <div class="rating-title">Product Quality</div>
-            <div class="stars-container">
-                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                </svg>
-            </div>
-            <div class="review-form">
-                <textarea placeholder="Performance: write about this aspect.&#10;&#10;Share more thoughts on the product to help other buyers."></textarea>
-                
-                <div class="media-buttons">
-                    <div class="media-button">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                        </svg>
-                        Add Photo
-                    </div>
-                    <div class="media-button">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                        </svg>
-                        Add Video
+            
+            <div class="rating-section">
+                <div class="rating-title">Product Quality</div>
+                <div class="stars-container">
+                    <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                </div>
+                <div class="review-form">
+                    <textarea placeholder="Performance: write about this aspect.&#10;&#10;Share more thoughts on the product to help other buyers."></textarea>
+                    
+                    <div class="media-buttons">
+                        <div class="media-button">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                            </svg>
+                            Add Photo
+                        </div>
+                        <div class="media-button">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                            </svg>
+                            Add Video
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="anonymous-option">
-            <input type="checkbox" id="anonymous">
-            <label for="anonymous">Leave your review anonymously</label>
-        </div>
-        <div class="username-note">Your user name will be shown as hi.mjunk</div>
-        
-        <div class="action-buttons">
-            <button class="cancel-button">CANCEL</button>
-            <button class="submit-button">SUBMIT</button>
+            
+            <div class="anonymous-option">
+                <input type="checkbox" id="anonymous">
+                <label for="anonymous">Leave your review anonymously</label>
+            </div>
+            <div class="username-note">Your user name will be shown as user</div>
+            
+            <div class="action-buttons">
+                <button class="cancel-button">CANCEL</button>
+                <button class="submit-button">SUBMIT</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // Open modal functionality
+        document.getElementById('openReviewModal').addEventListener('click', () => {
+            document.getElementById('modalOverlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        });
+
+        // Close modal functionality
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalOverlay')) {
+                document.getElementById('modalOverlay').style.display = 'none';
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
+            }
+        });
+
         // Star rating functionality
         document.querySelectorAll('.stars-container').forEach(container => {
             const stars = container.querySelectorAll('.star');
@@ -333,22 +400,17 @@
             });
         });
 
-        // Close modal functionality
-        document.querySelector('.close-modal').addEventListener('click', () => {
-            // In a real implementation, this would hide the modal
-            alert('Modal closed');
-        });
-
         // Submit button functionality
         document.querySelector('.submit-button').addEventListener('click', () => {
-            // In a real implementation, this would submit the review
             alert('Review submitted');
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
         });
 
         // Cancel button functionality
         document.querySelector('.cancel-button').addEventListener('click', () => {
-            // In a real implementation, this would hide the modal
-            alert('Review cancelled');
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
         });
     </script>
 </body>

@@ -263,6 +263,9 @@ header {
 }
 
 .product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   background-color: #fff;
   border-radius: 5px;
   overflow: hidden;
@@ -291,6 +294,9 @@ header {
 }
 
 .product-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   padding: 15px;
 }
 
@@ -299,6 +305,12 @@ header {
   font-weight: 600;
   margin-bottom: 10px;
   color: #333;
+  height: 40px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.2;
 }
 
 .price-container {
@@ -331,6 +343,7 @@ header {
 }
 
 .buy-button {
+  margin-top: auto;
   display: block;
   width: 100%;
   background-color: #088178;
