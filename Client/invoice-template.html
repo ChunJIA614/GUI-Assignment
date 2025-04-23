@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MajuTech Invoice</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 20px;
+        }
+        .company-info {
+            text-align: left;
+        }
+        .invoice-title {
+            text-align: right;
+        }
+        .company-name {
+            color: #088178;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .company-details {
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        h1 {
+            margin: 0;
+            color: #088178;
+        }
+        .invoice-details {
+            text-align: right;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .invoice-details div {
+            margin-bottom: 5px;
+        }
+        .address-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .address-box {
+            width: 45%;
+        }
+        .address-title {
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+        .payment-method {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th {
+            background-color: #088178;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .total-container {
+            margin-left: auto;
+            width: 40%;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        .total-title {
+            font-weight: bold;
+        }
+        .grand-total {
+            font-weight: bold;
+            font-size: 16px;
+            border-top: 2px solid #088178;
+            padding-top: 5px;
+            margin-top: 5px;
+        }
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+        .status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .paid {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .unpaid {
+            background-color: #f44336;
+            color: white;
+        }
+        .pending {
+            background-color: #ff9800;
+            color: white;
+        }
+        .btn {
+            background-color: #088178;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #1d2b4d;
+        }
+        @media print {
+            .btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="generatePDF" class="btn">Generate PDF</button>
+    
+    <div id="invoice" class="invoice-container">
+        <div class="invoice-header">
+            <div class="company-info">
+                <div class="company-name">MajuTech</div>
+                <div class="company-details">
+                    A-07-06, Block A, Alivo Plaza<br>
+                    Jalan PJU 9/1 Damansara Avenue<br>
+                    Bandar Sri Damansara<br>
+                    52200, Kuala Lumpur<br>
+                    Phone: +60 16-221-1800<br>
+                    Email: sales@majutech.com
+                </div>
+            </div>
+            <div class="invoice-title">
+                <h1>INVOICE</h1>
+                <div class="invoice-details">
+                    <div>Invoice No: INV-<span id="invoiceNumber">2025042301</span></div>
+                    <div>Invoice Date: <span id="invoiceDate">April 23, 2025</span></div>
+                    <div>Transaction Date: <span id="transactionDate">April 23, 2025</span></div>
+                    <div>Status: <span class="status paid" id="invoiceStatus">PAID</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="address-container">
+            <div class="address-box">
+                <div class="address-title">SHIPPING ADDRESS</div>
+                <div id="shippingAddress">
+                    John Doe<br>
+                    123 Main Street<br>
+                    Kuala Lumpur, 50100<br>
+                    Malaysia
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-method">
+            <strong>Payment Method:</strong> <span id="paymentMethod">Credit Card</span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Unit Price (MYR)</th>
+                    <th>Discount (MYR)</th>
+                    <th>Subtotal (MYR)</th>
+                </tr>
+            </thead>
+            <tbody id="invoiceItems">
+                <tr>
+                    <td>Smartphone XL Pro</td>
+                    <td>1</td>
+                    <td>2,499.00</td>
+                    <td>100.00</td>
+                    <td>2,548.94</td>
+                </tr>
+                <tr>
+                    <td>Wireless Earbuds</td>
+                    <td>2</td>
+                    <td>299.00</td>
+                    <td>0.00</td>
+                    <td>633.88</td>
+                </tr>
+                <tr>
+                    <td>Phone Case</td>
+                    <td>1</td>
+                    <td>59.00</td>
+                    <td>0.00</td>
+                    <td>62.54</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-container">
+            <div class="total-row">
+                <div class="total-title">Subtotal:</div>
+                <div>MYR 3,245.36</div>
+            </div>
+            <div class="total-row">
+                <div class="total-title">Discount:</div>
+                <div>MYR 100.00</div>
+            </div>
+            <div class="total-row">
+                <div class="total-title">Delivery Fee:</div>
+                <div>MYR 15.00</div>
+            </div>
+            <div class="total-row grand-total">
+                <div>Total:</div>
+                <div>MYR 3,349.72</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for your purchase!</p>
+            <p>This is an electronically generated invoice and does not require a signature.</p>
+        </div>
+    </div>
+
+    <script>
+        // Format current date
+        function formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+        
+        // Generate random invoice number
+        function generateInvoiceNumber() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `${year}${month}${day}${random}`;
+        }
+        
+        // Set default values on page load
+        window.onload = function() {
+            const today = new Date();
+            document.getElementById('invoiceDate').textContent = formatDate(today);
+            document.getElementById('transactionDate').textContent = formatDate(today);
+            document.getElementById('invoiceNumber').textContent = generateInvoiceNumber();
+        };
+        
+        // PDF generation functionality
+        document.getElementById('generatePDF').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            
+            // Hide the button temporarily
+            this.style.display = 'none';
+            
+            html2canvas(document.getElementById('invoice')).then(function(canvas) {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgProps = pdf.getImageProperties(imgData);
+                
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save('MajuTech-Invoice-' + document.getElementById('invoiceNumber').textContent + '.pdf');
+                
+                // Show the button again
+                document.getElementById('generatePDF').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
