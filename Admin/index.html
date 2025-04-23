@@ -21,6 +21,13 @@
       max-height: 500px;
       /* You can adjust this depending on how tall your submenu gets */
     }
+
+    /* Chart styles */
+    #chartContainer {
+      height: 350px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 
@@ -103,6 +110,22 @@
               </a>
             </li>
             <li class="sidebar-item">
+              <a class="sidebar-link" href="sales-list.html" aria-expanded="false">
+                <span>
+                  <i class="bi bi-graph-up"></i>
+                </span>
+                <span class="hide-menu">Sales</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="order-list.html" aria-expanded="false">
+                <span>
+                  <i class="bi bi-cart3"></i>
+                </span>
+                <span class="hide-menu">Orders</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
               <a class="sidebar-link" href="admin-profile.html" aria-expanded="false">
                 <span>
                   <i class="bi bi-person-square"></i>
@@ -177,15 +200,18 @@
                     <h5 class="card-title fw-semibold">Sales Overview</h5>
                   </div>
                   <div>
-                    <select class="form-select">
-                      <option value="1">March 2023</option>
-                      <option value="2">April 2023</option>
-                      <option value="3">May 2023</option>
-                      <option value="4">June 2023</option>
+                    <select class="form-select" id="monthSelector">
+                      <option value="1">January 2025</option>
+                      <option value="2">February 2025</option>
+                      <option value="3" selected>March 2025</option>
+                      <option value="4">April 2025</option>
                     </select>
                   </div>
                 </div>
-                <div id="chart"></div>
+                <!-- Chart container -->
+                <div id="chartContainer">
+                  <canvas id="salesChart"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -198,7 +224,7 @@
                     <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
                     <div class="row align-items-center">
                       <div class="col-8">
-                        <h4 class="fw-semibold mb-3">$36,358</h4>
+                        <h4 class="fw-semibold mb-3">RM 36,358</h4>
                         <div class="d-flex align-items-center mb-3">
                           <span
                             class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
@@ -210,11 +236,11 @@
                         <div class="d-flex align-items-center">
                           <div class="me-4">
                             <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                            <span class="fs-2">2023</span>
+                            <span class="fs-2">2025</span>
                           </div>
                           <div>
                             <span class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
-                            <span class="fs-2">2023</span>
+                            <span class="fs-2">2024</span>
                           </div>
                         </div>
                       </div>
@@ -231,10 +257,10 @@
                 <!-- Monthly Earnings -->
                 <div class="card">
                   <div class="card-body">
-                    <div class="row alig n-items-start">
+                    <div class="row align-items-start">
                       <div class="col-8">
                         <h5 class="card-title mb-9 fw-semibold"> Monthly Earnings </h5>
-                        <h4 class="fw-semibold mb-3">$6,820</h4>
+                        <h4 class="fw-semibold mb-3">RM 6,820</h4>
                         <div class="d-flex align-items-center pb-1">
                           <span
                             class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
@@ -367,7 +393,7 @@
                           </div>
                         </td>
                         <td class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
+                          <h6 class="fw-semibold mb-0 fs-4">RM 3.9</h6>
                         </td>
                       </tr>
                       <tr>
@@ -387,7 +413,7 @@
                           </div>
                         </td>
                         <td class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0 fs-4">$24.5k</h6>
+                          <h6 class="fw-semibold mb-0 fs-4">RM 24.5k</h6>
                         </td>
                       </tr>
                       <tr>
@@ -407,7 +433,7 @@
                           </div>
                         </td>
                         <td class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0 fs-4">$12.8k</h6>
+                          <h6 class="fw-semibold mb-0 fs-4">RM 12.8k</h6>
                         </td>
                       </tr>
                       <tr>
@@ -427,7 +453,7 @@
                           </div>
                         </td>
                         <td class="border-bottom-0">
-                          <h6 class="fw-semibold mb-0 fs-4">$2.4k</h6>
+                          <h6 class="fw-semibold mb-0 fs-4">RM 2.4k</h6>
                         </td>
                       </tr>
                     </tbody>
@@ -453,8 +479,8 @@
               <div class="card-body pt-3 p-4">
                 <h6 class="fw-semibold fs-4">Boat Headphone</h6>
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="fw-semibold fs-4 mb-0">$50 <span
-                      class="ms-2 fw-normal text-muted fs-3"><del>$65</del></span></h6>
+                  <h6 class="fw-semibold fs-4 mb-0">RM 50 <span
+                      class="ms-2 fw-normal text-muted fs-3"><del>RM 65</del></span></h6>
                   <ul class="list-unstyled d-flex align-items-center mb-0">
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
@@ -479,8 +505,8 @@
               <div class="card-body pt-3 p-4">
                 <h6 class="fw-semibold fs-4">MacBook Air Pro</h6>
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="fw-semibold fs-4 mb-0">$650 <span
-                      class="ms-2 fw-normal text-muted fs-3"><del>$900</del></span></h6>
+                  <h6 class="fw-semibold fs-4 mb-0">RM 650 <span
+                      class="ms-2 fw-normal text-muted fs-3"><del>RM 900</del></span></h6>
                   <ul class="list-unstyled d-flex align-items-center mb-0">
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
@@ -505,8 +531,8 @@
               <div class="card-body pt-3 p-4">
                 <h6 class="fw-semibold fs-4">Red Valvet Dress</h6>
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="fw-semibold fs-4 mb-0">$150 <span
-                      class="ms-2 fw-normal text-muted fs-3"><del>$200</del></span></h6>
+                  <h6 class="fw-semibold fs-4 mb-0">RM 150 <span
+                      class="ms-2 fw-normal text-muted fs-3"><del>RM 200</del></span></h6>
                   <ul class="list-unstyled d-flex align-items-center mb-0">
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
@@ -531,8 +557,8 @@
               <div class="card-body pt-3 p-4">
                 <h6 class="fw-semibold fs-4">Cute Soft Teddybear</h6>
                 <div class="d-flex align-items-center justify-content-between">
-                  <h6 class="fw-semibold fs-4 mb-0">$285 <span
-                      class="ms-2 fw-normal text-muted fs-3"><del>$345</del></span></h6>
+                  <h6 class="fw-semibold fs-4 mb-0">RM 285 <span
+                      class="ms-2 fw-normal text-muted fs-3"><del>RM 345</del></span></h6>
                   <ul class="list-unstyled d-flex align-items-center mb-0">
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
                     <li><a class="me-1" href="javascript:void(0)"><i class="ti ti-star text-warning"></i></a></li>
@@ -550,7 +576,149 @@
   </div>
   <script src="script/sidebarmenu.js"></script>
   <script src="script/script.js"></script>
+  <!-- Add Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <script>
+    // Initialize the sales chart when the document is ready
+    document.addEventListener('DOMContentLoaded', function () {
+      // Sample data for different months
+      const monthlyData = {
+        1: { // January
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          currentSales: [4800, 5200, 4900, 6100],
+          previousSales: [4200, 4300, 4100, 4700],
+          orders: [42, 47, 39, 51]
+        },
+        2: { // February
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          currentSales: [5500, 6300, 5900, 7200],
+          previousSales: [4800, 5200, 4900, 6100],
+          orders: [49, 56, 48, 63]
+        },
+        3: { // March
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          currentSales: [7500, 8500, 9200, 9800],
+          previousSales: [6800, 7200, 8100, 8300],
+          orders: [65, 72, 81, 88]
+        },
+        4: { // April
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          currentSales: [8200, 9100, 8700, 9500],
+          previousSales: [7500, 8500, 7300, 8200],
+          orders: [73, 82, 76, 87]
+        }
+      };
+
+      // Get the chart canvas
+      const chartCanvas = document.getElementById('salesChart');
+      let salesChart = null;
+
+      // Function to create/update the chart
+      function createSalesChart(monthIndex) {
+        // Get data for the selected month
+        const data = monthlyData[monthIndex];
+
+        // Destroy previous chart if it exists
+        if (salesChart) {
+          salesChart.destroy();
+        }
+
+        // Create new chart
+        salesChart = new Chart(chartCanvas, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [
+              {
+                label: '2025 Sales (RM)',
+                data: data.currentSales,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              },
+              {
+                label: '2024 Sales (RM)',
+                data: data.previousSales,
+                backgroundColor: 'rgba(180, 180, 180, 0.5)',
+                borderColor: 'rgba(180, 180, 180, 1)',
+                borderWidth: 1
+              },
+              {
+                label: 'Orders',
+                data: data.orders,
+                type: 'line',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 2,
+                pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                yAxisID: 'y1'
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Sales (RM)'
+                },
+                ticks: {
+                  callback: function (value) {
+                    return 'RM ' + value;
+                  }
+                }
+              },
+              y1: {
+                beginAtZero: true,
+                position: 'right',
+                title: {
+                  display: true,
+                  text: 'Number of Orders'
+                },
+                grid: {
+                  drawOnChartArea: false
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    let label = context.dataset.label || '';
+                    if (label) {
+                      label += ': ';
+                    }
+                    if (context.dataset.label === 'Orders') {
+                      label += context.parsed.y;
+                    } else {
+                      label += 'RM ' + context.parsed.y;
+                    }
+                    return label;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Initial chart creation with March data (value 3)
+      createSalesChart(3);
+
+      // Update the chart when the month selection changes
+      const monthSelector = document.getElementById('monthSelector');
+      if (monthSelector) {
+        monthSelector.addEventListener('change', function () {
+          const selectedMonth = parseInt(this.value);
+          createSalesChart(selectedMonth);
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>
