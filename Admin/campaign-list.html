@@ -1,3 +1,4 @@
+campaign-list.html -->
 <!doctype html>
 <html lang="en">
 
@@ -20,6 +21,54 @@
         .first-level.show {
             max-height: 500px;
             /* You can adjust this depending on how tall your submenu gets */
+        }
+
+        /* Product dropdown styles */
+        .product-dropdown {
+            display: none;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .product-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .product-table th {
+            font-weight: 500;
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+
+        .product-table td {
+            vertical-align: middle;
+        }
+
+        .product-image {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #6c757d;
+        }
+
+        .discounted-price {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+        .expand-btn {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #0d6efd;
         }
     </style>
 </head>
@@ -171,8 +220,8 @@
                 </nav>
             </header>
             <!--  Header End -->
-            <!--  Page Content Start --
-          <!--  Header Start -->
+            <!--  Page Content Start -->
+            <!--  Header Start -->
             <!-- Same header as product-list.html -->
 
             <!-- Main Content -->
@@ -185,45 +234,242 @@
                                 <i class="bi bi-plus-circle"></i> Create Campaign
                             </a>
                         </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Promotion Name</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Discount (%)</th>
-                                    <th>Total Featured Products</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Summer Mega Sale</td>
-                                    <td>2025-05-01</td>
-                                    <td>2025-05-15</td>
-                                    <td>20%</td>
-                                    <td>6</td> <!-- Total number of featured products -->
-                                    <td>
-                                        <a href="view-promotion.html" class="btn btn-sm btn-info text-white"><i class="bi bi-eye"></i></a>
-                                        <a href="edit-promotion.html" class="btn btn-sm btn-primary"><i class="bi bi-pen"></i></a>
-                                        <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Promotion Name</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Discount (%)</th>
+                                        <th>Total Products</th>
+                                        <th>Actions</th>
+                                        <th>Products</th> <!-- New column for expand button -->
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Summer Mega Sale</td>
+                                        <td>2025-05-01</td>
+                                        <td>2025-05-15</td>
+                                        <td>20%</td>
+                                        <td>6</td> <!-- Total number of featured products -->
+                                        <td>
+                                            <a href="view-promotion.html" class="btn btn-sm btn-info text-white"><i
+                                                    class="bi bi-eye"></i></a>
+                                            <a href="edit-promotion.html" class="btn btn-sm btn-primary"><i
+                                                    class="bi bi-pen"></i></a>
+                                            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                        <td>
+                                            <button class="expand-btn" onclick="toggleProductList('product-list-1')">
+                                                <i class="bi bi-chevron-down"></i> Show Products
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Product dropdown row for first campaign -->
+                                    <tr>
+                                        <td colspan="8" class="p-0">
+                                            <div id="product-list-1" class="product-dropdown">
+                                                <h6>Promotion Products</h6>
+                                                <table class="product-table table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Image</th>
+                                                            <th>Product Name</th>
+                                                            <th>Original Price</th>
+                                                            <th>Discounted Price</th>
+                                                            <th>Savings</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Pro Gaming Mouse</td>
+                                                            <td class="original-price">RM 299.00</td>
+                                                            <td class="discounted-price">RM 239.20</td>
+                                                            <td>RM 59.80</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Mechanical Keyboard</td>
+                                                            <td class="original-price">RM 499.00</td>
+                                                            <td class="discounted-price">RM 399.20</td>
+                                                            <td>RM 99.80</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Wireless Headphones</td>
+                                                            <td class="original-price">RM 399.00</td>
+                                                            <td class="discounted-price">RM 319.20</td>
+                                                            <td>RM 79.80</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Gaming Monitor 27"</td>
+                                                            <td class="original-price">RM 1,299.00</td>
+                                                            <td class="discounted-price">RM 1,039.20</td>
+                                                            <td>RM 259.80</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH RGB Mouse Pad</td>
+                                                            <td class="original-price">RM 129.00</td>
+                                                            <td class="discounted-price">RM 103.20</td>
+                                                            <td>RM 25.80</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Gaming Chair</td>
+                                                            <td class="original-price">RM 799.00</td>
+                                                            <td class="discounted-price">RM 639.20</td>
+                                                            <td>RM 159.80</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+
+                                    <!-- Second campaign entry for demonstration -->
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Back to School Deals</td>
+                                        <td>2025-06-01</td>
+                                        <td>2025-06-30</td>
+                                        <td>15%</td>
+                                        <td>4</td>
+                                        <td>
+                                            <a href="view-promotion.html" class="btn btn-sm btn-info text-white"><i
+                                                    class="bi bi-eye"></i></a>
+                                            <a href="edit-promotion.html" class="btn btn-sm btn-primary"><i
+                                                    class="bi bi-pen"></i></a>
+                                            <button class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                                        </td>
+                                        <td>
+                                            <button class="expand-btn" onclick="toggleProductList('product-list-2')">
+                                                <i class="bi bi-chevron-down"></i> Show Products
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Product dropdown row for second campaign -->
+                                    <tr>
+                                        <td colspan="8" class="p-0">
+                                            <div id="product-list-2" class="product-dropdown">
+                                                <h6>Promotion Products</h6>
+                                                <table class="product-table table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Image</th>
+                                                            <th>Product Name</th>
+                                                            <th>Original Price</th>
+                                                            <th>Discounted Price</th>
+                                                            <th>Savings</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Student Laptop</td>
+                                                            <td class="original-price">RM 2,499.00</td>
+                                                            <td class="discounted-price">RM 2,124.15</td>
+                                                            <td>RM 374.85</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Wireless Mouse</td>
+                                                            <td class="original-price">RM 199.00</td>
+                                                            <td class="discounted-price">RM 169.15</td>
+                                                            <td>RM 29.85</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH USB-C Hub</td>
+                                                            <td class="original-price">RM 149.00</td>
+                                                            <td class="discounted-price">RM 126.65</td>
+                                                            <td>RM 22.35</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="https://via.placeholder.com/40" alt="Product"
+                                                                    class="product-image"></td>
+                                                            <td>CLIKTECH Tablet Stand</td>
+                                                            <td class="original-price">RM 89.00</td>
+                                                            <td class="discounted-price">RM 75.65</td>
+                                                            <td>RM 13.35</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     </div>
     <script src="script/sidebarmenu.js"></script>
     <script src="script/script.js"></script>
+
+    <!-- Custom script for product dropdowns -->
+    <script>
+        function toggleProductList(id) {
+            const productList = document.getElementById(id);
+            const button = event.currentTarget;
+
+            if (productList.style.display === 'block') {
+                productList.style.display = 'none';
+                button.innerHTML = '<i class="bi bi-chevron-down"></i> Show Products';
+            } else {
+                // Close all other open dropdowns first
+                const allDropdowns = document.querySelectorAll('.product-dropdown');
+                allDropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+
+                // Reset all other buttons
+                const allButtons = document.querySelectorAll('.expand-btn');
+                allButtons.forEach(btn => {
+                    btn.innerHTML = '<i class="bi bi-chevron-down"></i> Show Products';
+                });
+
+                // Open the clicked dropdown
+                productList.style.display = 'block';
+                button.innerHTML = '<i class="bi bi-chevron-up"></i> Hide Products';
+            }
+        }
+
+        // Initialize sidebar dropdown functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const hasArrow = document.querySelectorAll('.has-arrow');
+            hasArrow.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const submenu = item.nextElementSibling;
+                    if (submenu) {
+                        submenu.classList.toggle('show');
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 
