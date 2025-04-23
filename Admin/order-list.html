@@ -4,259 +4,501 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Panel - Order List</title>
+    <title>Admin Panel - Order Management</title>
     <link rel="shortcut icon" type="image/png" href="img/logos/favicon.png" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        .order-card {
-            margin-bottom: 1rem;
-        }
-
-        .order-header {
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-
-        .order-body p {
-            margin-bottom: 0.3rem;
-        }
-
-        .list-group-item {
+        .page-wrapper {
             display: flex;
-            flex-direction: row;
-            align-items: center;
-            padding: 1rem;
+        }
+
+        .body-wrapper {
+            width: calc(100% - 260px);
+            margin-left: 260px;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .container-fluid {
+            padding: 30px;
+        }
+
+        table {
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .table th {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .btn-view {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-update {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .modal-product-img {
+            max-width: 80px;
+            height: auto;
+        }
+
+        .update-status-form label {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .update-status-form input,
+        .update-status-form textarea,
+        .update-status-form select {
+            margin-bottom: 15px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .left-sidebar {
+                width: 220px;
+            }
+            .body-wrapper {
+                width: calc(100% - 220px);
+                margin-left: 220px;
+            }
         }
 
         @media (max-width: 768px) {
-            .list-group-item {
-                flex-direction: column;
-                align-items: flex-start;
+            .left-sidebar {
+                width: 0;
+                transform: translateX(-100%);
+                transition: all 0.3s;
             }
-
-            .list-group-item .ms-auto {
-                margin-top: 1rem;
+            .body-wrapper {
+                width: 100%;
                 margin-left: 0;
+            }
+            .sidebar-open .left-sidebar {
+                width: 260px;
+                transform: translateX(0);
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-
-        <!-- Sidebar (same as before) -->
-        <aside class="left-sidebar">
-            <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="index.html" class="text-nowrap logo-img">
-                        <img src="img/icon.jpg" width="100" height="84" alt="Company Logo" />
+    <div class="page-wrapper" id="main-wrapper">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+        <!-- Sidebar scroll-->
+        <div>
+          <div class="brand-logo d-flex align-items-center justify-content-between">
+            <a href="./index.html" class="text-nowrap logo-img">
+              <img src="img/icon.jpg" width="100" height="84" alt="Company Logo" />
+            </a>
+          </div>
+          <!-- Sidebar navigation-->
+          <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+            <ul id="sidebarnav">
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="index.html" aria-expanded="false">
+                  <span>
+                    <i class="bi bi-house"></i>
+                  </span>
+                  <span class="hide-menu">Home</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                  <span>
+                    <i class="bi bi-box"></i>
+                  </span>
+                  <span class="hide-menu">Products</span>
+                </a>
+                <ul class="collapse first-level" aria-expanded="false">
+                  <li class="sidebar-item">
+                    <a href="product-list.html" class="sidebar-link">
+                      <span class="hide-menu">Product List</span>
                     </a>
-                </div>
-                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                    <ul id="sidebarnav">
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="index.html">
-                                <i class="bi bi-house"></i>
-                                <span class="hide-menu">Home</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)">
-                                <i class="bi bi-box"></i>
-                                <span class="hide-menu">Products</span>
-                            </a>
-                            <ul class="collapse first-level">
-                                <li class="sidebar-item"><a href="product-list.html" class="sidebar-link"><span
-                                            class="hide-menu">Product List</span></a></li>
-                                <li class="sidebar-item"><a href="add-product.html" class="sidebar-link"><span
-                                            class="hide-menu">Add Product</span></a></li>
-                                <li class="sidebar-item"><a href="promotion.html" class="sidebar-link"><span
-                                            class="hide-menu">Promotion Campaign</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)">
-                                <i class="bi bi-person"></i>
-                                <span class="hide-menu">Staff</span>
-                            </a>
-                            <ul class="collapse first-level">
-                                <li class="sidebar-item"><a href="staff-list.html" class="sidebar-link"><span
-                                            class="hide-menu">Staff List</span></a></li>
-                                <li class="sidebar-item"><a href="add-staff.html" class="sidebar-link"><span
-                                            class="hide-menu">Add Staff</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="customer-list.html">
-                                <i class="bi bi-people"></i>
-                                <span class="hide-menu">Customer</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="admin-profile.html">
-                                <i class="bi bi-person-square"></i>
-                                <span class="hide-menu">Profile</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="add-product.html" class="sidebar-link">
+                      <span class="hide-menu">Add Product</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="promotion.html" class="sidebar-link">
+                      <span class="hide-menu">Promotion Campaign</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+  
+              <li class="sidebar-item">
+                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                  <span>
+                    <i class="bi bi-person"></i>
+                  </span>
+                  <span class="hide-menu">Staff</span>
+                </a>
+                <ul class="collapse first-level" aria-expanded="false">
+                  <li class="sidebar-item">
+                    <a href="staff-list.html" class="sidebar-link">
+                      <span class="hide-menu">Staff List</span>
+                    </a>
+                  </li>
+                  <li class="sidebar-item">
+                    <a href="add-staff.html" class="sidebar-link">
+                      <span class="hide-menu">Add Staff</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="customer-list.html" aria-expanded="false">
+                  <span>
+                    <i class="bi bi-people"></i>
+                  </span>
+                  <span class="hide-menu">Customer</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
+                <a class="sidebar-link" href="admin-profile.html" aria-expanded="false">
+                  <span>
+                    <i class="bi bi-person-square"></i>
+                  </span>
+                  <span class="hide-menu">Profile</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+      </aside>
+      <!--  Sidebar End -->
 
         <!-- Main Content -->
         <div class="body-wrapper">
-            <!-- Header -->
-            <header class="app-header">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <ul class="navbar-nav">
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link sidebartoggler nav-icon-hover" href="javascript:void(0)">
-                                <i class="ti ti-menu-2"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-icon-hover" href="javascript:void(0)">
-                                <i class="ti ti-bell-ringing"></i>
-                                <div class="notification bg-primary rounded-circle"></div>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link nav-icon-hover" href="#" id="drop2" data-bs-toggle="dropdown">
-                                    <img src="#" alt="" width="35" height="35" class="rounded-circle">
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up">
-                                    <div class="message-body">
-                                        <a href="#" class="d-flex align-items-center gap-2 dropdown-item"><i
-                                                class="ti ti-user fs-6"></i>
-                                            <p class="mb-0 fs-3">My Profile</p>
-                                        </a>
-                                        <a href="#" class="d-flex align-items-center gap-2 dropdown-item"><i
-                                                class="ti ti-mail fs-6"></i>
-                                            <p class="mb-0 fs-3">My Account</p>
-                                        </a>
-                                        <a href="#" class="d-flex align-items-center gap-2 dropdown-item"><i
-                                                class="ti ti-list-check fs-6"></i>
-                                            <p class="mb-0 fs-3">My Task</p>
-                                        </a>
-                                        <a href="authentication-login.html"
-                                            class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                <i class="ti ti-bell-ringing"></i>
+                <div class="notification bg-primary rounded-circle"></div>
+              </a>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+              <li class="nav-item dropdown">
+                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <!-- location to store user image -->
+                  <img src="#" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p class="mb-0 fs-3">My Profile</p>
+                    </a>
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-mail fs-6"></i>
+                      <p class="mb-0 fs-3">My Account</p>
+                    </a>
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-list-check fs-6"></i>
+                      <p class="mb-0 fs-3">My Task</p>
+                    </a>
+                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Header End -->
 
             <!-- Order List Section -->
             <div class="container-fluid">
-                <h4 class="mb-3">Order List</h4>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0">Orders</h4>
+                    <div class="d-flex">
+                        <input type="text" class="form-control me-2" placeholder="Search" style="width:200px;">
+                    </div>
+                </div>
 
-                <div class="list-group">
-
-                    <!-- Order Card Example -->
-                    <!-- Order Card with Collapse -->
-                    <div class="accordion" id="orderAccordion">
-                        <div class="accordion-item mb-3 rounded shadow-sm border">
-                            <h2 class="accordion-header" id="heading-25783961">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse-25783961" aria-expanded="false"
-                                    aria-controls="collapse-25783961">
-                                    <div class="d-flex justify-content-between align-items-center w-100">
-                                        <div class="d-flex flex-column">
-                                            <span class="fw-semibold">#25783961</span>
-                                            <small class="text-muted">John Doe</small>
-                                        </div>
-                                        <div>
-                                            <span class="badge bg-success ms-3">Delivered</span>
-                                        </div>
-                                    </div>
-                                </button>
-
-
-                            </h2>
-                            <div id="collapse-25783961" class="accordion-collapse collapse"
-                                aria-labelledby="heading-25783961" data-bs-parent="#orderAccordion">
-                                <div class="accordion-body">
-                                    <p><strong>Products:</strong> Racquet A x2, Shoes B x1</p>
-                                    <p><strong>Total:</strong> $170.97</p>
-                                    <div class="d-flex gap-2">
-                                        <a href="view-order.html" class="btn btn-sm btn-info text-white">
-                                            <i class="bi bi-eye"></i> View
-                                        </a>
-
-                                        <!-- Change Status Dropdown -->
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm btn-warning dropdown-toggle text-white"
-                                                type="button" id="dropdownMenuButton-25783961" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <i class="bi bi-arrow-repeat"></i> Change Status
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-25783961">
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(this, 'Processing')">Processing</a></li>
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(this, 'Shipped')">Shipped</a></li>
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(this, 'Delivered')">Delivered</a></li>
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(this, 'Cancelled')">Cancelled</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order ID</th>
+                                        <th>User</th>
+                                        <th>Created Timestamp</th>
+                                        <th>Status</th>
+                                        <th>Shipping Address</th>
+                                        <th>Subtotal (MYR)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>MCMYGC_INV_00027</td>
+                                        <td>Sam Sam</td>
+                                        <td>2025-04-22 22:32:27</td>
+                                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                        <td>Ground Floor, Bangunan Tan Sri Khaw Kai Boh (Block A), Jalan Genting Kelang, Setapak, 53300, Kuala Lumpur, Kuala Lumpur</td>
+                                        <td>723.00</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-view" onclick="viewOrder('MCMYGC_INV_00027')">View Details</button>
+                                            <button class="btn btn-sm btn-update mt-1" onclick="updateOrderStatus('MCMYGC_INV_00027')">Update Status</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>MCMYGC_INV_00026</td>
+                                        <td>Sam Sam</td>
+                                        <td>2025-04-22 15:54:08</td>
+                                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                        <td>tst, tst, tst, tst</td>
+                                        <td>5699.00</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-view" onclick="viewOrder('MCMYGC_INV_00026')">View Details</button>
+                                            <button class="btn btn-sm btn-update mt-1" onclick="updateOrderStatus('MCMYGC_INV_00026')">Update Status</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>MCMYGC_INV_00025</td>
+                                        <td>admintest</td>
+                                        <td>2025-04-21 15:16:55</td>
+                                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                        <td>sss, 12, 1, 2</td>
+                                        <td>374.00</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-view" onclick="viewOrder('MCMYGC_INV_00025')">View Details</button>
+                                            <button class="btn btn-sm btn-update mt-1" onclick="updateOrderStatus('MCMYGC_INV_00025')">Update Status</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td>MCMYGC_INV_00024</td>
+                                        <td>Sam Sam</td>
+                                        <td>2025-04-21 10:22:04</td>
+                                        <td><span class="badge bg-primary">Delivered</span></td>
+                                        <td>wertjk, 1234567, 123456, 12345</td>
+                                        <td>234.00</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-view" onclick="viewOrder('MCMYGC_INV_00024')">View Details</button>
+                                            <button class="btn btn-sm btn-update mt-1" onclick="updateOrderStatus('MCMYGC_INV_00024')">Update Status</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>MCMYGC_INV_00022</td>
+                                        <td>Sam Sam</td>
+                                        <td>2025-04-20 20:42:43</td>
+                                        <td><span class="badge bg-primary">Delivered</span></td>
+                                        <td>O-003A Blok O Jalan PJU 10/4c Apartment Harmoni Damansara Damai 47830 Petaling Jaya Selangor</td>
+                                        <td>5899.00</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-view" onclick="viewOrder('MCMYGC_INV_00022')">View Details</button>
+                                            <button class="btn btn-sm btn-update mt-1" onclick="updateOrderStatus('MCMYGC_INV_00022')">Update Status</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+<!-- Order Details Modal - Compact Version -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog"> <!-- Removed modal-lg class to make it smaller -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3"> <!-- Added smaller padding -->
+                <!-- Order Info Section -->
+                <div class="mb-3">
+                    <p class="mb-1"><strong>Order Number:</strong> <span id="modal-order-id">MCMYGC_INV_00027</span></p>
+                    <p class="mb-1"><strong>Date:</strong> <span id="modal-date">2025-04-22 22:32:27</span></p>
+                    <p class="mb-1"><strong>Status:</strong> <span id="modal-status">Pending</span></p>
+                    <p class="mb-1"><strong>Payment:</strong> <span id="modal-payment">VISA/Mastercard</span></p>
+                    <p class="mb-1"><strong>Ship To:</strong> <span id="modal-shipping-address">Ground Floor, Bangunan Tan Sri Khaw Kai Boh...</span></p>
+                </div>
 
-                    <!-- Add more horizontal cards below -->
+                <!-- Simple Order Items Table -->
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CLIKTECH 15 Ultra Power Bank</td>
+                                <td>2</td>
+                                <td>MYR 349.00</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" class="text-end"><strong>Total:</strong></td>
+                                <td><strong>MYR 723.00</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="updateOrderStatus(document.getElementById('modal-order-id').textContent)">Update Status</button>
+                <button type="button" class="btn btn-info btn-sm" onclick="window.location.href='order-details.html?id=' + document.getElementById('modal-order-id').textContent">Full Details</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+    <!-- Update Status Modal -->
+    <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStatusModalLabel">Update Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="update-status-form">
+                        <div class="mb-3">
+                            <label for="update-order-id" class="form-label">Order ID</label>
+                            <input type="text" class="form-control" id="update-order-id" value="MCMYGC_INV_00027" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-timeline-title" class="form-label">Timeline Title</label>
+                            <input type="text" class="form-control" id="update-timeline-title" placeholder="Title to display on the order timeline">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-timeline-message" class="form-label">Timeline Message</label>
+                            <textarea class="form-control" id="update-timeline-message" rows="3" placeholder="Message to display on the order timeline"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-order-status" class="form-label">Order Status</label>
+                            <select class="form-select" id="update-order-status">
+                                <option value="Pending" selected>Pending</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveStatus()">Update</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        function updateStatus(element, newStatus) {
-            const card = element.closest('.accordion-item');
-            const badge = card.querySelector('.accordion-button .badge');
+        // Toggle sidebar on mobile
+        document.getElementById('sidebarToggle')?.addEventListener('click', function() {
+            document.querySelector('.page-wrapper').classList.toggle('sidebar-open');
+        });
 
-            badge.textContent = newStatus;
+        // View order details
+        function viewOrder(orderId) {
+            // In a real application, you would fetch order details from the backend
+            // For this example, we'll just show the modal with hardcoded data
+            var modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+            document.getElementById('modal-order-id').textContent = orderId;
+            
+            // In a real application, you would update all modal fields with data fetched from the server
+            
+            modal.show();
+        }
 
-            badge.classList.remove('bg-success', 'bg-warning', 'bg-primary', 'bg-secondary', 'bg-danger');
+        // Update order status
+        function updateOrderStatus(orderId) {
+            var modal = new bootstrap.Modal(document.getElementById('updateStatusModal'));
+            document.getElementById('update-order-id').value = orderId;
+            modal.show();
+        }
 
-            switch (newStatus) {
-                case 'Delivered':
-                    badge.classList.add('bg-success');
+        // Save updated status
+        function saveStatus() {
+            // Get values from form
+            const orderId = document.getElementById('update-order-id').value;
+            const title = document.getElementById('update-timeline-title').value;
+            const message = document.getElementById('update-timeline-message').value;
+            const status = document.getElementById('update-order-status').value;
+            
+            // In a real application, you would send this data to the server
+            console.log('Updating order:', orderId);
+            console.log('New status:', status);
+            console.log('Timeline title:', title);
+            console.log('Timeline message:', message);
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('updateStatusModal'));
+            modal.hide();
+            
+            // Show confirmation (you might want to show a toast notification instead)
+            alert('Order status updated successfully!');
+            
+            // Find the row with the matching order ID
+            const rows = document.querySelectorAll('tbody tr');
+            for (let i = 0; i < rows.length; i++) {
+                const orderIdCell = rows[i].querySelector('td:nth-child(2)');
+                if (orderIdCell && orderIdCell.textContent === orderId) {
+                    // Update status badge in the table
+                    const badge = rows[i].querySelector('.badge');
+                    badge.textContent = status;
+                    
+                    // Update badge style based on status
+                    if (status === 'Delivered') {
+                        badge.className = 'badge bg-primary';
+                    } else {
+                        badge.className = 'badge bg-warning text-dark';
+                    }
                     break;
-                case 'Processing':
-                    badge.classList.add('bg-warning');
-                    break;
-                case 'Shipped':
-                    badge.classList.add('bg-primary');
-                    break;
-                case 'Cancelled':
-                    badge.classList.add('bg-danger');
-                    break;
-                default:
-                    badge.classList.add('bg-secondary');
+                }
             }
         }
     </script>
 
-
-
-    <script src="script/sidebarmenu.js"></script>
-    <script src="script/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
