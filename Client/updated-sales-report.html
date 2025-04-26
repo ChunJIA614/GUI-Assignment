@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Products Sales Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .sales-report-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .report-header {
+            background-color: #088178;
+            padding: 20px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .report-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .report-table-container {
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .report-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            position: sticky;
+            top: 0;
+        }
+
+        .report-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .product-cell {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid #dee2e6;
+        }
+
+        .product-name {
+            font-weight: 500;
+        }
+
+        .product-sku {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-info {
+            background-color: #cff4fc;
+            color: #055160;
+        }
+
+        .badge-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .report-footer {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .export-btn {
+            background-color: #088178;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        .export-btn:hover {
+            background-color: #066e66;
+        }
+
+        .print-mode .export-btn,
+        .print-mode .report-footer {
+            display: none !important;
+        }
+
+        #exportOptions {
+            position: absolute;
+            top: auto;
+            bottom: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+            padding: 0;
+            display: none;
+            z-index: 100;
+            margin-bottom: 10px;
+            min-width: 180px;
+            overflow: hidden;
+        }
+
+        /* Improved export option buttons */
+        .export-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: none;
+            border: none;
+            width: 100%;
+            padding: 12px 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .export-option:hover {
+            background-color: #f0f7ff;
+        }
+
+        .export-option i {
+            font-size: 16px;
+        }
+
+        .export-option.pdf-option i {
+            color: #dc3545;
+        }
+
+        .export-option.excel-option i {
+            color: #198754;
+        }
+
+        .export-option.csv-option i {
+            color: #0d6efd;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .close-btn {
+            background-color: #088178;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            background-color: #066963;
+        }
+
+        @media (max-width: 768px) {
+            .report-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sales-report-container" id="salesReport">
+        <!-- Report Header -->
+        <div class="report-header">
+            <div class="report-title">Top 10 Products Sales Report</div>
+        </div>
+
+        <!-- Report Table -->
+        <div class="report-table-container">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Units Sold</th>
+                        <th>Base Price</th>
+                        <th>Total Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Product 1 -->
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Smart Watch Pro" class="product-image">
+                                <div>
+                                    <div class="product-name">Smart Watch Pro</div>
+                                    <div class="product-sku">SKU: EL-SW-001</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>1,245</td>
+                        <td class="text-right">$199.99</td>
+                        <td class="text-right">$224,088</td>
+                    </tr>
+                    <!-- Product 2 -->
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Wireless Headphones" class="product-image">
+                                <div>
+                                    <div class="product-name">Premium Wireless Headphones</div>
+                                    <div class="product-sku">SKU: EL-HP-002</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>985</td>
+                        <td class="text-right">$149.99</td>
+                        <td class="text-right">$125,578</td>
+                    </tr>
+                    <!-- Product 3 -->
+                    <tr>
+                        <td>3</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Wireless Earbuds" class="product-image">
+                                <div>
+                                    <div class="product-name">Wireless Earbuds Pro</div>
+                                    <div class="product-sku">SKU: EL-EB-003</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>876</td>
+                        <td class="text-right">$129.99</td>
+                        <td class="text-right">$113,871</td>
+                    </tr>
+                    <!-- Product 4 -->
+                    <tr>
+                        <td>4</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Digital Camera" class="product-image">
+                                <div>
+                                    <div class="product-name">4K Digital Camera</div>
+                                    <div class="product-sku">SKU: EL-CM-004</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>312</td>
+                        <td class="text-right">$499.99</td>
+                        <td class="text-right">$148,197</td>
+                    </tr>
+                    <!-- Product 5 -->
+                    <tr>
+                        <td>5</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Smartphone" class="product-image">
+                                <div>
+                                    <div class="product-name">Smart Phone X Pro</div>
+                                    <div class="product-sku">SKU: EL-SP-005</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>298</td>
+                        <td class="text-right">$899.99</td>
+                        <td class="text-right">$246,741</td>
+                    </tr>
+                    <!-- Product 6 -->
+                    <tr>
+                        <td>6</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Bluetooth Speaker" class="product-image">
+                                <div>
+                                    <div class="product-name">Waterproof Bluetooth Speaker</div>
+                                    <div class="product-sku">SKU: EL-BS-006</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>456</td>
+                        <td class="text-right">$89.99</td>
+                        <td class="text-right">$30,776</td>
+                    </tr>
+                    <!-- Product 7 -->
+                    <tr>
+                        <td>7</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Laptop" class="product-image">
+                                <div>
+                                    <div class="product-name">Ultra Slim Laptop 15"</div>
+                                    <div class="product-sku">SKU: EL-LP-007</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>189</td>
+                        <td class="text-right">$1,299.99</td>
+                        <td class="text-right">$216,214</td>
+                    </tr>
+                    <!-- Product 8 -->
+                    <tr>
+                        <td>8</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Fitness Tracker" class="product-image">
+                                <div>
+                                    <div class="product-name">Fitness Activity Tracker</div>
+                                    <div class="product-sku">SKU: EL-FT-008</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>624</td>
+                        <td class="text-right">$79.99</td>
+                        <td class="text-right">$49,914</td>
+                    </tr>
+                    <!-- Product 9 -->
+                    <tr>
+                        <td>9</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Tablet" class="product-image">
+                                <div>
+                                    <div class="product-name">10" Tablet Pro</div>
+                                    <div class="product-sku">SKU: EL-TB-009</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>142</td>
+                        <td class="text-right">$329.99</td>
+                        <td class="text-right">$38,424</td>
+                    </tr>
+                    <!-- Product 10 -->
+                    <tr>
+                        <td>10</td>
+                        <td>
+                            <div class="product-cell">
+                                <img src="/api/placeholder/100/100" alt="Gaming Mouse" class="product-image">
+                                <div>
+                                    <div class="product-name">RGB Gaming Mouse</div>
+                                    <div class="product-sku">SKU: EL-GM-010</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>Electronics</td>
+                        <td>735</td>
+                        <td class="text-right">$59.99</td>
+                        <td class="text-right">$35,273</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Report Footer -->
+        <div class="report-footer">
+            <div class="export-container" style="position: relative;">
+                <button id="exportBtn" class="export-btn">
+                    <i class="bi bi-download"></i>
+                    Export Report
+                </button>
+                <div id="exportOptions">
+                    <button class="export-option pdf-option" data-format="pdf">
+                        <i class="bi bi-file-earmark-pdf"></i> Export as PDF
+                    </button>
+                    <button class="export-option csv-option" data-format="csv">
+                        <i class="bi bi-file-earmark-text"></i> Export as CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Confirmation Modal -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <h3 id="exportModalTitle">Export Report</h3>
+            <p id="exportModalMessage">Your report is being exported...</p>
+            <div id="exportModalProgress"
+                style="height: 20px; width: 100%; background-color: #f0f0f0; margin: 15px 0; border-radius: 10px; overflow: hidden;">
+                <div id="progressBar"
+                    style="height: 100%; width: 0%; background-color: #088178; transition: width 1s ease-in-out;"></div>
+            </div>
+            <button class="close-btn" id="closeModalBtn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to be fully loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get references to all necessary elements
+            const exportBtn = document.getElementById('exportBtn');
+            const exportOptions = document.getElementById('exportOptions');
+            const exportModal = document.getElementById('exportModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const exportModalTitle = document.getElementById('exportModalTitle');
+            const exportModalMessage = document.getElementById('exportModalMessage');
+            const progressBar = document.getElementById('progressBar');
+            const salesReport = document.getElementById('salesReport');
+
+            // Fixed export button click handler
+            exportBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (exportOptions.style.display === 'block') {
+                    exportOptions.style.display = 'none';
+                } else {
+                    exportOptions.style.display = 'block';
+                }
+            });
+
+            // Close the dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                if (!exportBtn.contains(event.target) && !exportOptions.contains(event.target)) {
+                    exportOptions.style.display = 'none';
+                }
+            });
+
+            // Set up export option buttons with direct format selection
+            const exportOptionButtons = document.querySelectorAll('.export-option');
+            exportOptionButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const format = this.dataset.format;
+                    exportReport(format);
+                });
+            });
+
+            // Export function with actual PDF generation
+            function exportReport(format) {
+                exportOptions.style.display = 'none';
+
+                // Show the export modal
+                exportModal.style.display = 'block';
+                exportModalTitle.textContent = `Exporting as ${format.toUpperCase()}`;
+                exportModalMessage.textContent = 'Preparing your report...';
+                progressBar.style.width = '0%';
+
+                // Simulate progress
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    progressBar.style.width = `${progress}%`;
+
+                    if (progress < 40) {
+                        exportModalMessage.textContent = 'Processing data...';
+                    } else if (progress < 80) {
+                        exportModalMessage.textContent = `Generating ${format.toUpperCase()} file...`;
+                    } else if (progress < 100) {
+                        exportModalMessage.textContent = 'Finalizing export...';
+                    }
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        exportModalMessage.textContent = `Your ${format.toUpperCase()} report is ready!`;
+
+                        // Generate actual exports based on format
+                        setTimeout(function () {
+                            if (format === 'pdf') {
+                                generatePDF();
+                            } else if (format === 'csv') {
+                                generateCSV();
+                            }
+                        }, 500);
+                    }
+                }, 50);
+            }
+
+            // Function to generate PDF
+            function generatePDF() {
+                try {
+                    const reportElement = document.getElementById('salesReport');
+                    exportModalMessage.textContent = 'Converting report to PDF...';
+
+                    if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+                        console.error('Required libraries not loaded: html2canvas or jsPDF');
+                        exportModalMessage.textContent = 'Error: Required libraries not loaded.';
+                        return;
+                    }
+
+                    // Add class to hide export buttons in PDF
+                    reportElement.classList.add('print-mode');
+
+                    // Use html2canvas to capture the report
+                    html2canvas(reportElement, {
+                        scale: 1.5, // Higher resolution
+                        useCORS: true,
+                        logging: false
+                    }).then(canvas => {
+                        // Convert the canvas to image data
+                        const imgData = canvas.toDataURL('image/png');
+
+                        // Remove print mode class after capture
+                        reportElement.classList.remove('print-mode');
+
+                        // Initialize jsPDF
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF('p', 'mm', 'a4');
+
+                        // Calculate dimensions to fit on PDF
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
+                        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+                        // Add the image to the PDF
+                        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+                        // Save the PDF
+                        pdf.save('sales_report.pdf');
+
+                        exportModalMessage.textContent = 'Your PDF report has been downloaded successfully!';
+                    }).catch(error => {
+                        // Remove print mode class if there's an error
+                        reportElement.classList.remove('print-mode');
+                        console.error('Error generating PDF:', error);
+                        exportModalMessage.textContent = 'Error generating PDF: ' + error.message;
+                    });
+                } catch (error) {
+                    // Remove print mode class if there's an exception
+                    reportElement.classList.remove('print-mode');
+                    console.error('Exception in PDF generation:', error);
+                    exportModalMessage.textContent = 'Error: ' + error.message;
+                }
+            }
+
+            // Function to generate CSV
+            function generateCSV() {
+                try {
+                    // Generate simple CSV content from the table
+                    const table = document.querySelector('.report-table');
+                    const rows = table.querySelectorAll('tr');
+
+                    // Extract header row
+                    const headers = [];
+                    const headerCells = rows[0].querySelectorAll('th');
+                    headerCells.forEach(cell => headers.push('"' + cell.textContent.trim() + '"'));
+                    let content = headers.join(',') + '\n';
+
+                    // Extract data rows (skip header)
+                    for (let i = 1; i < rows.length; i++) {
+                        const row = rows[i];
+                        const cells = row.querySelectorAll('td');
+                        const rowData = [];
+
+                        cells.forEach((cell, index) => {
+                            // For product cell, just extract the name
+                            if (index === 1) {
+                                const productName = cell.querySelector('.product-name').textContent.trim();
+                                rowData.push('"' + productName + '"');
+                            } else {
+                                // Clean up the text content
+                                let text = cell.textContent.trim();
+                                rowData.push('"' + text + '"');
+                            }
+                        });
+
+                        content += rowData.join(',') + '\n';
+                    }
+
+                    // Create and trigger download
+                    const fileName = 'sales_report.csv';
+                    const mimeType = 'text/csv;charset=utf-8';
+                    const blob = new Blob([content], { type: mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+
+                    exportModalMessage.textContent = 'Your CSV report has been downloaded successfully!';
+                } catch (error) {
+                    console.error('Exception in CSV generation:', error);
+                    exportModalMessage.textContent = 'Error generating CSV: ' + error.message;
+                }
+            }
+
+            // Close the modal when Close button is clicked
+            closeModalBtn.addEventListener('click', function () {
+                exportModal.style.display = 'none';
+            });
+
+            // Close the modal when clicking outside
+            window.addEventListener('click', function (event) {
+                if (event.target === exportModal) {
+                    exportModal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
